@@ -1,0 +1,12 @@
+sec/
+config.yaml
+tools/gh-cli/
+tools/gh.zip
+tools/github-cli.cjs
+tools/*test-config.json
+tools/Geo*.dat
+tools/*.db
+tools/cache.db
+release-check/
+tools/artifact-core-check/
+dist/

@@ -1,0 +1,21 @@
+const fs = require('fs'), vm = require('vm'), assert = require('assert/strict');
+const fixture = process.env.NODE_FIXTURE;
+const data = JSON.parse(fs.readFileSync(fixture || 'sec/config.substore.json','utf8').replace(/^\uFEFF/,''));
+const nodes = fixture ? data.map(tag => ({tag})) : data.outbounds;
+const c = {$arguments:{grouptype:1}};
+vm.createContext(c);
+vm.runInContext(fs.readFileSync(process.env.SCRIPT_UNDER_TEST || 'convert-custom.js','utf8'),c);
+// 使用原始名称测试分组；协议及认证信息替换为无凭据的本地模拟节点。
+const result = c.main({proxies:nodes.map((p,i)=>({name:p.tag,type:'ss',server:'127.0.0.1',port:10000+i,cipher:'aes-128-gcm',password:'test-only'}))});
+console.log('Input nodes:',nodes.length);
+for(const g of result['proxy-groups']) console.log(g.name,g.type,g.proxies?.length);
+const regions = result['proxy-groups'].filter(g=>g.name.endsWith('节点'));
+const matched = new Set(regions.flatMap(g=>g.proxies||[]));
+console.log('Ungrouped count:',nodes.filter(p=>!matched.has(p.tag)).length);
+assert.equal(nodes.filter(p=>!matched.has(p.tag)).length, 3);
+assert.equal(matched.size,110);
+assert.equal(regions.length,15);
+const self = result['proxy-groups'].find(g=>g.name==='自建');
+assert.deepEqual(Array.from(self.proxies),nodes.filter(p=>p.tag.includes('自建')).map(p=>p.tag));
+console.log('Self:',self.proxies);
+fs.writeFileSync('tools/sec-test-config.json',JSON.stringify(result,null,2));

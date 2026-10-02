@@ -1,0 +1,12 @@
+{
+  "name": "mihomo-codex-override",
+  "version": "1.0.0",
+  "private": true,
+  "description": "自动国家分组与自建节点选择的 Mihomo / SubStore 定制覆写",
+  "license": "MIT",
+  "scripts": {
+    "build": "node tools/build-custom.cjs",
+    "test": "node tools/test-custom.cjs",
+    "test:fixture": "node tools/test-fixture.cjs"
+  }
+}
