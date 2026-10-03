@@ -4,15 +4,25 @@
 
 ## 使用
 
-下载 Release 附件 `convert-custom.js`，在支持 `main(config)` 的客户端中导入 JavaScript 覆写，或在 SubStore 的配置处理脚本中使用其内容。输入必须是 Clash/Mihomo 配置对象，包含 `proxies` 数组；sing-box 的 `outbounds` 需要先通过 SubStore 转换为 Mihomo 格式。
-
-本仓库为私有仓库，Release 下载需要 GitHub 登录，不能把私有下载链接当作匿名 jsDelivr 脚本链接。需要 URL 导入的场景，可将下载文件放在自己可访问的 HTTP 服务上，再将该地址填入 SubStore。不要把 GitHub Token 写入链接。
-
-默认国家组为 `url-test`。SubStore 支持链接片段参数时可使用：
+在 SubStore 的配置文件处理流程中，先生成 Clash/Mihomo 配置，再添加 JavaScript 脚本处理，将下面链接填入脚本链接栏：
 
 ```text
-https://你的脚本服务/convert-custom.js#grouptype=1&selftag=自建&threshold=1
+https://raw.githubusercontent.com/H-starlit/mihomo-codex/main/convert-custom.js#grouptype=1
 ```
+
+仓库已公开，链接不需要登录或 Token。以上链接跟随 `main` 更新；也可使用 CDN 链接：
+
+```text
+https://cdn.jsdelivr.net/gh/H-starlit/mihomo-codex@main/convert-custom.js#grouptype=1
+```
+
+固定 1.1 版本的链接如下，可避免后续更新改变行为：
+
+```text
+https://raw.githubusercontent.com/H-starlit/mihomo-codex/v1.1/convert-custom.js#grouptype=1
+```
+
+输入必须是 Clash/Mihomo 配置对象，包含 `proxies` 数组。请在配置处理阶段使用，勿放在只接收节点数组的订阅节点处理阶段。sing-box 的 `outbounds` 需要先通过 SubStore 转换为 Mihomo 格式。默认国家组为 `url-test`，自建标签为“自建”，无需额外参数；多个参数用 `&` 分隔，例如 `#grouptype=1&selftag=自建&threshold=1`。CDN 可能存在缓存延迟，更新后优先使用 Raw 链接。
 
 | 参数 | 默认值 | 作用 |
 | --- | --- | --- |

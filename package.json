@@ -1,6 +1,6 @@
 {
   "name": "mihomo-codex-override",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "自动国家分组与自建节点选择的 Mihomo / SubStore 定制覆写",
   "license": "MIT",
